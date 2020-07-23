@@ -3,20 +3,25 @@
     <nav-bar class="home-nav">
       <template v-slot:center>购物街</template>
     </nav-bar>
-    <home-swipers :banners="banners"></home-swipers>
+    <swipers :banners="banners"></swipers>
+    <home-recomand-view :recommends="recommends"></home-recomand-view>
   </div>
 </template>
 
 <script>
 import NavBar from 'components/common/navbar/NavBar'
-import HomeSwipers from './childComponents/HomeSwipers'
+// import HomeSwipers from './childComponents/HomeSwipers'
+import Swipers from '../../plugins/Swipers';
+import HomeRecomandView from './childComponents/HomeRecomandView'
 
 import { getHomeMultidata } from 'network/home'
 export default {
   name: 'Home',
   components: {
     NavBar,
-    HomeSwipers
+    // HomeSwipers
+    Swipers,
+    HomeRecomandView
   },
   data() {
     return {
