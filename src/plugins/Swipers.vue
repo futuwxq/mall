@@ -60,13 +60,14 @@ export default {
   overflow: hidden;
   color: #fff;
   font-size: 20px;
-  /* line-height: 150px; */
+  line-height: 150px;
   text-align: center;
-  /* background-color: #39a9ed; */
+  background-color: #39a9ed;
 }
 
 .van-swipe-item img {
   width: 100%;
+  display: block;
   /* height: 100%; */
   /* pointer-events: none; */
 }
