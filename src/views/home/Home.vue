@@ -1,13 +1,17 @@
 <template>
-  <div id="home">
+  <div id="home" >
     <nav-bar class="home-nav">
       <template v-slot:center>购物街</template>
     </nav-bar>
-    <swipers :banners="banners"></swipers>
-    <home-recomand-view :recommends="recommends"></home-recomand-view>
-    <home-feature-view />
-    <tab-control class="tabControl" :tabControlTitles="['流行', '新款', '精选']" @tabClick="tabClick" />
-    <goods-list :goods="showGoods" />
+    <scroll class="content" ref="scroll">
+      <swipers :banners="banners"></swipers>
+      <home-recomand-view :recommends="recommends"></home-recomand-view>
+      <home-feature-view />
+      <tab-control class="tabControl" :tabControlTitles="['流行', '新款', '精选']" @tabClick="tabClick" />
+      <goods-list :goods="showGoods" />
+
+    </scroll>
+    <back-top @click.native="btnClick" /> 
   </div>
 </template>
 
@@ -19,8 +23,10 @@ import HomeRecomandView from './childComponents/HomeRecomandView'
 import HomeFeatureView from './childComponents/HomeFeatureView';
 
 import NavBar from 'components/common/navbar/NavBar'
+import Scroll from 'components/common/scroll/Scroll';
 import TabControl from 'components/content/tabControl/TabControl';
 import GoodsList from 'components/content/good/GoodsList';
+import BackTop from 'components/content/backTop/BackTop';
 
 import Swipers from '../../plugins/Swipers';
 
@@ -32,8 +38,10 @@ export default {
     HomeFeatureView,
 
     NavBar,
+    Scroll,
     TabControl,
     GoodsList,
+    BackTop,
 
     Swipers,
 
@@ -80,7 +88,19 @@ export default {
 
       console.log(index);
     },
-
+    // scroll
+    contentScroll(position) {
+      this.isShowBackTop = (-position.y) > 1000
+    },
+    loadMore() {
+      this.getHomeGoods(this.currentType)
+    },
+    //backtop
+    btnClick(){
+      // this.$refs.scroll 获取的是整个Scroll对象，可以调用 Scroll对象属性
+      // this.$refs.scroll.scroll.scrollTo(0,0,500) 
+      this.$refs.scroll.scrollTo(0,0)
+    },
     /**
      * 网络请求相关的方法
      */
@@ -106,7 +126,9 @@ export default {
 
 <style scoped>
 #home {
-  padding-top: 44px;
+  /* padding-top: 44px; */
+  height: 100vh;
+  position: relative;
 }
 .home-nav {
   background: var(--color-tint);
@@ -123,5 +145,18 @@ export default {
 .tabControl {
   position: sticky;
   top: 44px;
+}
+
+.content {
+  /* overflow: hidden;
+  height: 400px;
+  height: calc(100% - 93px);
+  margin-top: 44px; */
+
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
 }
 </style>
