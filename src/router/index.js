@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+// const originalPush = VueRouter.prototype.push
+// VueRouter.prototype.push = function push(location) {
+//     return originalPush.call(this, location).catch(err => err)
+// }
 Vue.use(VueRouter)
 
 // 懒加载路由
@@ -12,6 +15,8 @@ const Cart = () =>
     import ('views/cart/Cart')
 const Profile = () =>
     import ('views/profile/Profile')
+const Detail = () =>
+    import ('views/detail/Detail')
 
 // 配置路由关系
 const routes = [{
@@ -33,6 +38,10 @@ const routes = [{
     {
         path: '/profile',
         component: Profile
+    }, {
+        path: '/detail:iid',
+        // path: '/detail',
+        component: Detail
     }
 ]
 

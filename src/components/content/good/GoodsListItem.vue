@@ -1,34 +1,37 @@
 <template>
-  <div class="goods-item">
-    <a :href="goodsItem.link">
-      <img :src="goodsItem.show.img" @load="imageLoad" />
-      <div class="goods-info">
-        <p>{{goodsItem.title}}</p>
-        <span class="price">{{goodsItem.price}}</span>
-        <span class="collect">{{goodsItem.cfav}}</span>
-      </div>
-    </a>
+  <div class="goods-item" @click="itemClick">
+    <img :src="goodsItem.show.img" @load="imageLoad" />
+    <div class="goods-info">
+      <p>{{goodsItem.title}}</p>
+      <span class="price">{{goodsItem.price}}</span>
+      <span class="collect">{{goodsItem.cfav}}</span>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'GoodsListItem',
+  name: "GoodsListItem",
   props: {
     goodsItem: {
       type: Object,
       default() {
-        return {}
-      }
+        return {};
+      },
     },
   },
-methods: {
-      imageLoad(){
+  methods: {
+    imageLoad() {
       // console.log('图片加载完成');
-      this.$bus.$emit('itemImageLoad')
+      this.$bus.$emit("itemImageLoad");
+    },
+    itemClick() {
+    //  路由挑战
+      this.$router.push('/detail'+this.goodsItem.iid)
+      // this.$router.push('/detail/' + 111)
     }
-}
-}
+  },
+};
 </script>
 
 <style scoped>

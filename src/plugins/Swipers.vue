@@ -2,12 +2,10 @@
   <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white" @change="onChange">
     <van-swipe-item v-for="(item,index) in banners" :key="index" class="my-swipe-item">
       <a :href="item.link">
-        <img v-lazy="item.image" alt />
+        <!-- <img v-lazy="item.image" @load="imageIoad" /> -->
+        <img :src="item.image" @load="imageIoad" />
       </a>
     </van-swipe-item>
-    <!-- <template #indicator>
-      <div class="custom-indicator">{{ (current + 1)}} / {{banners.length}}</div>
-    </template>-->
   </van-swipe>
 </template>
 
@@ -19,19 +17,18 @@ import { Lazyload } from 'vant';
 
 Vue.use(Swipe);
 Vue.use(SwipeItem);
-Vue.use(Lazyload);
+// 懒加载影响获取 tabControl 的 offsetTop
+// Vue.use(Lazyload);
 
 export default {
   name: 'Swipers',
   data() {
     return {
       currentIndex: 0,
+      isLoad : false
     }
   },
   computed: {
-    // getIndex(index) {
-    //   index / this.banners.length
-    // }
   },
   props: {
     banners: {
@@ -48,6 +45,14 @@ export default {
   methods: {
     onChange(index) {
       this.currentIndex = index
+    },
+   imageIoad(){
+      // 本来会 emit 4 次 ，此处用 isLoad判断只用一次
+      if(!this.isLoad) {
+        // console.log('--');
+          this.$emit('swiperImageIoad')
+          this.isLoad = true
+      }
     }
   }
 }

@@ -3,18 +3,24 @@
     <nav-bar class="home-nav">
       <template v-slot:center>购物街</template>
     </nav-bar>
+    <tab-control
+      :tabControlTitles="['流行', '新款', '精选']"
+      @tabClick="tabClick"
+      ref="tabControlCopy"
+      v-show="isTabFixed"
+      class="tabFixed"
+    />
     <scroll
       class="content"
       ref="scroll"
       :probe-type="3"
       @scroll="contentScroll"
       :pull-up-load="true"
-     @pullingUp="loadMore"
-    >
-      <swipers :banners="banners"></swipers>
-      <home-recomand-view :recommends="recommends"></home-recomand-view>
+      @pullingUp="loadMore">
+      <swipers :banners="banners" @swiperImageIoad="swiperImageIoad" />
+      <home-recomand-view :recommends="recommends" />
       <home-feature-view />
-      <tab-control :tabControlTitles="['流行', '新款', '精选']" @tabClick="tabClick" />
+      <tab-control :tabControlTitles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl" />
       <goods-list :goods="showGoods" />
     </scroll>
     <back-top @click.native="btnClick" v-show="isShowBackTop" />
@@ -36,7 +42,7 @@ import BackTop from "components/content/backTop/BackTop";
 import Swipers from "../../plugins/Swipers";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
-import {debounce} from 'common/utils';
+import { debounce } from "common/utils";
 export default {
   name: "Home",
   components: {
@@ -49,11 +55,6 @@ export default {
     BackTop,
     Swipers,
   },
-  computed: {
-    showGoods() {
-      return this.goods[this.currentType].list;
-    },
-  },
   data() {
     return {
       banners: [],
@@ -65,7 +66,25 @@ export default {
       },
       currentType: "pop",
       isShowBackTop: false,
+      tabControlOffsetTop: 0,
+      isTabFixed: false,
+      saveY: 0,
     };
+  },
+  computed: {
+    showGoods() {
+      return this.goods[this.currentType].list;
+    }
+  },
+  destroyed() {
+    console.log("home destory");
+  },
+  activated() {
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+    this.$refs.scroll.refresh()
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getScrollY();
   },
   created() {
     // 请求多个数据
@@ -76,12 +95,12 @@ export default {
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
   },
-  mounted(){ 
-// 监听 item 中图片加载完成
-const refresh =debounce(this.$refs.scroll.refresh,50)
-    this.$bus.$on('itemImageLoad',() => {
-     refresh() 
-    })
+  mounted() {
+    // 监听商品 item 中图片加载完成
+    const refresh = debounce(this.$refs.scroll.refresh, 50);
+    this.$bus.$on("itemImageLoad", () => {
+      refresh();
+    });
   },
   methods: {
     /**
@@ -99,12 +118,16 @@ const refresh =debounce(this.$refs.scroll.refresh,50)
           this.currentType = "sell";
           break;
       }
-
-      console.log(index);
+      // 同步 TabControl 和 TabControlCopy 的激活状态
+      this.$refs.tabControl.currentIndex = index;
+      this.$refs.tabControlCopy.currentIndex = index;
     },
     // scroll
     contentScroll(position) {
+      // 1.判断BackTop是否显示
       this.isShowBackTop = -position.y > 1000;
+      // 2.决定tabControl是否吸顶(position: fixed)
+      this.isTabFixed = -position.y > this.tabControlOffsetTop;
     },
     loadMore() {
       // console.log("上拉加载更多");
@@ -115,6 +138,12 @@ const refresh =debounce(this.$refs.scroll.refresh,50)
       // this.$refs.scroll 获取的是整个Scroll对象，可以调用 Scroll对象属性
       // this.$refs.scroll.scroll.scrollTo(0,0,500)
       this.$refs.scroll.scrollTo(0, 0);
+    },
+    // swiper 加载完成获取tabControl的offsetTop
+    // $el 是获取组件的根元素
+    swiperImageIoad() {
+      // console.log(this.$refs.tabControl.$el.offsetTop,'swiper');
+      this.tabControlOffsetTop = this.$refs.tabControl.$el.offsetTop;
     },
     /**
      * 网络请求相关的方法
@@ -150,7 +179,6 @@ const refresh =debounce(this.$refs.scroll.refresh,50)
 .home-nav {
   background: var(--color-tint);
   color: #fff;
-
   position: fixed;
   top: 0;
   left: 0;
@@ -175,5 +203,12 @@ const refresh =debounce(this.$refs.scroll.refresh,50)
   bottom: 49px;
   left: 0;
   right: 0;
+}
+.tabFixed {
+  position: relative;
+  top: 44px;
+  left: 0;
+  right: 0;
+  z-index: 9;
 }
 </style>

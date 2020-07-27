@@ -28,6 +28,8 @@ export default {
       currentIndex: 0 //记录当前列表的index
     }
   },
+  mounted(){
+  },
   methods: {
     itemClick(index) {
       this.currentIndex = index

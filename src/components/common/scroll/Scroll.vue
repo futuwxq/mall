@@ -52,19 +52,18 @@ export default {
       // console.log('上拉加载更多');
       this.$emit("pullingUp");
     });
-    console.log(scroll);
-    console.log(this.srcoll);
-    // console.log(BScroll);
   },
   methods: {
     // 封装 scrollTo 方法，让 Home 组件直接调用
     // ES6 新语法 参数可以赋默认值
     scrollTo(x, y, time = 300) {
-     this.scroll && this.scroll.scrollTo(x, y, time);
+      this.scroll && this.scroll.scrollTo(x, y, time);
       // console.log(this.srcoll);
     },
-    // 封装 finishPullUp 方法 ，让 Home 组件直接调用
-    // 表示这次上拉数据已经加载完，否则不能完成下次加载
+    /**
+     * 封装 finishPullUp 方法 ，让 Home 组件直接调用
+     * 表示这次上拉数据已经加载完，否则不能完成下次加载
+     */
     finishPullUp() {
       this.scroll && this.scroll.finishPullUp();
     },
@@ -73,6 +72,13 @@ export default {
       this.scroll && this.scroll.refresh();
       // console.log('---');
     },
+
+    /**
+     * 返回滚动的 y 轴距离
+     */
+    getScrollY(){
+      return this.scroll ? this.scroll.y : 0
+    }
   },
 };
 </script>
