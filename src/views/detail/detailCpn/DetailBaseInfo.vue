@@ -4,7 +4,7 @@
     <div class="info-price">
       <span class="n-price">{{goods.newprice}}</span>
       <span class="o-price">{{goods.oldprice}}</span>
-      <span class="goods-discount" v-if="goods.discount">{{goods.discount}}</span>
+      <span class="goods-discount" v-if="goods.discount" :style="{background:goods.discountcolor}">{{goods.discount}}</span>
     </div>
     <div class="info-other">
       <span>{{goods.columns[0]}}</span>
@@ -57,7 +57,7 @@ export default {
 
 .info-price .o-price {
   font-size: 12px;
-  margin-left: 5px;
+  margin: 0 5px;
   text-decoration: line-through;
 }
 .goods-discount {
@@ -66,6 +66,9 @@ export default {
   border-radius: 100px;
   padding: 2px 6px;
   background: var(--color-high-text);
+ /* vertical-align: top;  */
+ position: relative;
+ top: -6px;
 }
 .info-other {
   display: flex;
@@ -76,7 +79,7 @@ export default {
   border-bottom: 1px solid #ededed
 }
 .info-other span {
-  flex: 1;
+  /* flex: 1; */
 }
 .info-service {
   display: flex;
@@ -84,7 +87,6 @@ export default {
   color: #333;
   padding: 10px 4px;
   justify-content: space-between;
-  border-bottom: 4px solid #ededed;
 }
 .info-service img {
     width: 12px;
