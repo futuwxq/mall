@@ -1,34 +1,23 @@
 <template>
   <div id="detail">
-    <detail-nav-bar />
-    <detail-swiper :swpiperImage="swpiperImage"/>
-    <detail-base-info :goods="goods" />
-    <detail-shop-info :shop="shop" />
-
-    <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
-      <li>4</li>
-      <li>4</li>
-      <li>4</li>
-      <li>4</li>
-      <li>4</li>
-      <li>4</li>
-      <li>4</li>
-      <li>4</li>
-      <li>4</li>
-    </ul>
-
+    <detail-nav-bar class="nav-bar" />
+    <scroll class="content" ref="scroll">
+      <detail-swiper :swpiperImage="swpiperImage" />
+      <detail-base-info :goods="goods" />
+      <detail-shop-info :shop="shop" />
+      <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad" />
+    </scroll>
   </div>
 </template>
 
 <script>
 import DetailNavBar from "./detailCpn/DetailNavBar";
-import DetailSwiper from './detailCpn/DetailSwiper';
-import DetailBaseInfo from './detailCpn/DetailBaseInfo';
-import DetailShopInfo from './detailCpn/DetailShopInfo';
+import DetailSwiper from "./detailCpn/DetailSwiper";
+import DetailBaseInfo from "./detailCpn/DetailBaseInfo";
+import DetailShopInfo from "./detailCpn/DetailShopInfo";
+import DetailGoodsInfo from "./detailCpn/DetailGoodsInfo";
+
+import Scroll from "components/common/scroll/Scroll";
 
 import { getDetails, Goods, Shop } from "network/detail";
 export default {
@@ -37,14 +26,17 @@ export default {
     DetailNavBar,
     DetailSwiper,
     DetailBaseInfo,
-    DetailShopInfo
+    DetailShopInfo,
+    DetailGoodsInfo,
+    Scroll,
   },
   data() {
     return {
       iid: null,
-      swpiperImage:[],
-      goods:{},
-      shop:{}
+      swpiperImage: [],
+      goods: {},
+      shop: {},
+      detailInfo: {},
     };
   },
   created() {
@@ -53,14 +45,42 @@ export default {
     // 获取详情页的数据
     getDetails(this.iid).then((res) => {
       console.log(res);
-      const data = res.result
+      const data = res.result;
+      // 1. 轮播图照片
       this.swpiperImage = data.itemInfo.topImages;
-      this.goods =new Goods(data.itemInfo, data.columns, data.shopInfo.services)
-      this.shop = new Shop(data.shopInfo)
+      // 2. 商品信息
+      this.goods = new Goods(
+        data.itemInfo,
+        data.columns,
+        data.shopInfo.services
+      );
+      // 3. 获取店铺信息
+      this.shop = new Shop(data.shopInfo);
+      // 4. 获取商品详细信息
+      this.detailInfo = data.detailInfo;
     });
+  },
+  methods: {
+    imageLoad() {
+      this.$refs.scroll.refresh();
+    },
   },
 };
 </script>
 <style scoped>
+#detail {
+  position: relative;
+  z-index: 9;
+  background: #fff;
+  height: 100vh;
+}
+.content {
+  height: calc(100% - 44px);
+}
 
+.nav-bar {
+  position: relative;
+  z-index: 9;
+  background: #fff;
+}
 </style>

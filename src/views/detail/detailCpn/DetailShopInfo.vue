@@ -19,7 +19,7 @@
         <div class="shop-score" v-for="item in shop.score" :key="item.id">
           <span>{{item.name}}</span>
           <span class="score" :class="{'score-better':item.isBetter}">{{item.score}}</span>
-          <span class="better" :class="{'score-better':item.isBetter}">{{item.isBetter?'低':'高'}}</span>
+          <span class="better" :class="{'score-better':item.isBetter}">{{item.isBetter?'高':'低'}}</span>
         </div>
       </div>
     </div>
