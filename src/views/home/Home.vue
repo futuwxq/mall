@@ -16,7 +16,8 @@
       :probe-type="3"
       @scroll="contentScroll"
       :pull-up-load="true"
-      @pullingUp="loadMore">
+      @pullingUp="loadMore"
+    >
       <swipers :banners="banners" @swiperImageIoad="swiperImageIoad" />
       <home-recomand-view :recommends="recommends" />
       <home-feature-view />
@@ -69,22 +70,28 @@ export default {
       tabControlOffsetTop: 0,
       isTabFixed: false,
       saveY: 0,
+      itemImageListener: null,
     };
   },
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
-    }
+    },
   },
   destroyed() {
     console.log("home destory");
   },
   activated() {
     this.$refs.scroll.scrollTo(0, this.saveY, 0);
-    this.$refs.scroll.refresh()
+    this.$refs.scroll.refresh();
   },
   deactivated() {
+    // 1. 保存离开时的位置 y 值
     this.saveY = this.$refs.scroll.getScrollY();
+    // 2.取消全局事件监听
+    // 如果参数只写一个事件名称，就会把所有地方相关事件的监听取消，因此需要传入一个函数
+    // 也就是离开的时候只取消对该函数的监听
+    this.$bus.$off("itemImageLoad", this.itemImageListener);
   },
   created() {
     // 请求多个数据
@@ -97,10 +104,12 @@ export default {
   },
   mounted() {
     // 监听商品 item 中图片加载完成
-    const refresh = debounce(this.$refs.scroll.refresh, 50);
-    this.$bus.$on("itemImageLoad", () => {
-      refresh();
-    });
+    const newRefresh = debounce(this.$refs.scroll.refresh, 50);
+    // 对监听事件进行保存
+    this.itemImageListener = () => {
+      newRefresh();
+    };
+    this.$bus.$on("itemImageLoad", this.itemImageListener);
   },
   methods: {
     /**

@@ -7,6 +7,8 @@
       <detail-shop-info :shop="shop" />
       <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad" />
       <detail-param-info :paramInfo="paramInfo" />
+      <detail-comment-info :commentInfo="commentInfo" />
+      <goods-list :goods="recommendInfo" />
     </scroll>
   </div>
 </template>
@@ -18,10 +20,21 @@ import DetailBaseInfo from "./detailCpn/DetailBaseInfo";
 import DetailShopInfo from "./detailCpn/DetailShopInfo";
 import DetailGoodsInfo from "./detailCpn/DetailGoodsInfo";
 import DetailParamInfo from "./detailCpn/DetailParamInfo";
+import DetailCommentInfo from "./detailCpn/DetailCommentInfo";
+
+import GoodsList from "../../components/content/good/GoodsList";
 
 import Scroll from "components/common/scroll/Scroll";
 
-import { getDetails, Goods, Shop, GoodsParam } from "network/detail";
+import { debounce } from "common/utils";
+
+import {
+  getDetails,
+  getRecommends,
+  Goods,
+  Shop,
+  GoodsParam,
+} from "network/detail";
 export default {
   name: "Detail",
   components: {
@@ -31,6 +44,8 @@ export default {
     DetailShopInfo,
     DetailGoodsInfo,
     DetailParamInfo,
+    DetailCommentInfo,
+    GoodsList,
     Scroll,
   },
   data() {
@@ -41,12 +56,18 @@ export default {
       shop: {},
       detailInfo: {},
       paramInfo: {},
+      commentInfo: {},
+      recommendInfo: [],
+      itemImageListener: null,
     };
   },
   created() {
     this.iid = this.$route.params.iid;
 
-    // 获取详情页的数据
+    /**
+     * 获取详情页的数据
+     */
+
     getDetails(this.iid).then((res) => {
       console.log(res);
       const data = res.result;
@@ -67,7 +88,35 @@ export default {
         data.itemParams.info,
         data.itemParams.rule
       );
+      // 6. 获取商品的评论信息，有的商品可能没有评论信息
+      if (data.rate.cRate !== 0) {
+        this.commentInfo = data.rate.list[0];
+      }
     });
+
+    /**
+     * 获取推荐数据
+     */
+    getRecommends().then((res) => {
+      console.log(res);
+      this.recommendInfo = res.data.list;
+    });
+  },
+  mounted() {
+    const newRefresh = debounce(this.$refs.scroll.refresh, 50);
+    this.itemImageListener = () => {
+      console.log("details");
+      newRefresh();
+    };
+    this.$bus.$on("itemImageLoad", this.itemImageListener);
+  },
+  deactivated() {
+    console.log("home destory");
+  },
+  destroyed() {
+    // 取消全局事件监听
+    // 因为 Detail 没有 keep-alive，所以无法触发deactivated 需要在 destory
+    this.$bus.$off("itemImageLoad", this.itemImageListener);
   },
   methods: {
     imageLoad() {

@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="goodsItem.show.img" @load="imageLoad" />
+    <img :src="getGoodImage" @load="imageLoad" />
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -20,16 +20,27 @@ export default {
       },
     },
   },
+  computed: {
+    getGoodImage() {
+      return this.goodsItem.image || this.goodsItem.show.img;
+      // return this.goodsItem.show.img || this.goodsItem.image;
+    },
+  },
   methods: {
     imageLoad() {
-      // console.log('图片加载完成');
-      this.$bus.$emit("itemImageLoad");
+      // 根据路由判断是哪个路径 emit 哪个事件
+      // if (this.$route.path.includes("/home")) {
+      //   this.$bus.$emit("homeItemImageLoad");
+      // } else if (this.$route.path.includes("/detail")) {
+      //   this.$bus.$emit("detailItemImageLoad");
+      // }
+      this.$bus.$emit("ItemImageLoad");
     },
     itemClick() {
-    //  路由挑战
-      this.$router.push('/detail'+this.goodsItem.iid)
+      //  路由挑战
+      this.$router.push("/detail" + this.goodsItem.iid);
       // this.$router.push('/detail/' + 111)
-    }
+    },
   },
 };
 </script>

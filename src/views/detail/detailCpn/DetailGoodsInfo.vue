@@ -36,6 +36,7 @@ export default {
       // 判断所有的图片都加在完了，只进行一次回调
       if (++this.count === this.imagesLength) {
         this.$emit("imageLoad");
+        console.log("goodsInfor 加载完成");
       }
     },
   },

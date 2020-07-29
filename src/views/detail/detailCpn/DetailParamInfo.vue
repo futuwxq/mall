@@ -59,4 +59,7 @@ table.info-param tr td:last-child {
   line-height: 1.15;
   font-size: 13px;
 }
+.info-img img {
+  width: 100%;
+}
 </style>

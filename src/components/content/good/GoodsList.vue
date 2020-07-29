@@ -5,23 +5,23 @@
 </template>
 
 <script>
-import GoodsListItem from './GoodsListItem';
+import GoodsListItem from "./GoodsListItem";
 export default {
-  name: 'GoodsList',
+  name: "GoodsList",
   components: {
-    GoodsListItem
+    GoodsListItem,
   },
   props: {
-    goods: { //不同 type 的 page 累加数据 ，遍历之后 item 就是每个展示的图片价格信息等等
+    goods: {
+      //不同 type 的 page 累加数据 ，遍历之后 item 就是每个展示的图片价格信息等等
       type: Array,
       default() {
-        return []
-      }
-    }
+        return [];
+      },
+    },
   },
-  methods: {
-  }
-}
+  methods: {},
+};
 </script>
 
 <style scoped>
@@ -29,5 +29,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  margin-top: 10px;
 }
 </style>
