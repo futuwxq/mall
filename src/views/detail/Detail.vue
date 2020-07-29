@@ -6,6 +6,7 @@
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
       <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad" />
+      <detail-param-info :paramInfo="paramInfo" />
     </scroll>
   </div>
 </template>
@@ -16,10 +17,11 @@ import DetailSwiper from "./detailCpn/DetailSwiper";
 import DetailBaseInfo from "./detailCpn/DetailBaseInfo";
 import DetailShopInfo from "./detailCpn/DetailShopInfo";
 import DetailGoodsInfo from "./detailCpn/DetailGoodsInfo";
+import DetailParamInfo from "./detailCpn/DetailParamInfo";
 
 import Scroll from "components/common/scroll/Scroll";
 
-import { getDetails, Goods, Shop } from "network/detail";
+import { getDetails, Goods, Shop, GoodsParam } from "network/detail";
 export default {
   name: "Detail",
   components: {
@@ -28,6 +30,7 @@ export default {
     DetailBaseInfo,
     DetailShopInfo,
     DetailGoodsInfo,
+    DetailParamInfo,
     Scroll,
   },
   data() {
@@ -37,6 +40,7 @@ export default {
       goods: {},
       shop: {},
       detailInfo: {},
+      paramInfo: {},
     };
   },
   created() {
@@ -58,6 +62,11 @@ export default {
       this.shop = new Shop(data.shopInfo);
       // 4. 获取商品详细信息
       this.detailInfo = data.detailInfo;
+      // 5. 获取商品参数信息
+      this.paramInfo = new GoodsParam(
+        data.itemParams.info,
+        data.itemParams.rule
+      );
     });
   },
   methods: {

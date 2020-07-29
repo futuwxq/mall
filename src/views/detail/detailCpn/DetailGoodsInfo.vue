@@ -52,7 +52,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .good-info {
-  margin: 20px 0px;
+  margin: 20px 0 0;
+  border-bottom: 5px solid #f2f5f8;
 }
 .info-text-wrap {
   position: relative;

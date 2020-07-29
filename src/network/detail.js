@@ -1,5 +1,4 @@
 import { request } from './require';
-import { construct } from 'core-js/fn/reflect';
 
 export function getDetails(iid) {
     return request({
@@ -24,7 +23,7 @@ export class Goods {
 }
 
 export class GoodsParam {
-    construct(info, rule) {
+    constructor(info, rule) {
         // images 可能没有数据
         this.image = info.images ? info.images[0] : '';
         this.infos = info.set;
@@ -32,6 +31,7 @@ export class GoodsParam {
 
     }
 }
+
 export class Shop {
     constructor(shopinfo) {
         this.logo = shopinfo.shopLogo;
