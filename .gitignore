@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 /dist
-/src/network/require.js
+src/network/require.js
 
 # local env files
 .env.local
@@ -22,3 +22,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 node_modules
+/src/network
