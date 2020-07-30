@@ -3,7 +3,7 @@ node_modules
 /dist
 src/network/require.js
 **/src/network/require.js
-network/*
+
 
 # local env files
 .env.local
