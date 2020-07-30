@@ -6,9 +6,9 @@
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
       <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad" />
-      <detail-param-info :paramInfo="paramInfo" />
-      <detail-comment-info :commentInfo="commentInfo" />
-      <goods-list :goods="recommendInfo" />
+      <detail-param-info ref="params" :paramInfo="paramInfo" />
+      <detail-comment-info ref="comment" :commentInfo="commentInfo" />
+      <goods-list ref="recommend" :goods="recommendInfo" />
     </scroll>
   </div>
 </template>
@@ -22,11 +22,12 @@ import DetailGoodsInfo from "./detailCpn/DetailGoodsInfo";
 import DetailParamInfo from "./detailCpn/DetailParamInfo";
 import DetailCommentInfo from "./detailCpn/DetailCommentInfo";
 
-import GoodsList from "../../components/content/good/GoodsList";
+import GoodsList from "components/content/good/GoodsList";
 
 import Scroll from "components/common/scroll/Scroll";
 
 import { debounce } from "common/utils";
+import { itemListenerMixin } from "common/mixin";
 
 import {
   getDetails,
@@ -58,9 +59,10 @@ export default {
       paramInfo: {},
       commentInfo: {},
       recommendInfo: [],
-      itemImageListener: null,
+      // itemImageListener: null, mixin
     };
   },
+  mixins: [itemListenerMixin],
   created() {
     this.iid = this.$route.params.iid;
 
@@ -92,6 +94,14 @@ export default {
       if (data.rate.cRate !== 0) {
         this.commentInfo = data.rate.list[0];
       }
+
+      // 当每个组件对象获取数据之后，还需要渲染 DOM
+      this.$nextTick(() => {
+        this.themeTopYs = [];
+
+        this.themeTopYs.push(0);
+        this.themeTopYs.push(this.$refs.params.$el.offset);
+      });
     });
 
     /**
@@ -103,12 +113,12 @@ export default {
     });
   },
   mounted() {
-    const newRefresh = debounce(this.$refs.scroll.refresh, 50);
-    this.itemImageListener = () => {
-      console.log("details");
-      newRefresh();
-    };
-    this.$bus.$on("itemImageLoad", this.itemImageListener);
+    // mixin 处理的是 商品推荐照片 goodlist
+    // let newRefresh = debounce(this.$refs.scroll.refresh, 50);
+    // this.itemImageListener = () => {
+    //   newRefresh();
+    // };
+    // this.$bus.$on("itemImageLoad", this.itemImageListener);
   },
   deactivated() {
     console.log("home destory");
@@ -119,8 +129,13 @@ export default {
     this.$bus.$off("itemImageLoad", this.itemImageListener);
   },
   methods: {
+    // 处理的是 detail info 的图片
     imageLoad() {
-      this.$refs.scroll.refresh();
+      // 方法一 等所有图片加载完了 refresh
+      // this.$refs.scroll.refresh();
+      // 方法二 debounce mixin
+      // 等价于调用了 debounce(this.$refs.scroll.refresh, 100);
+      this.newRefresh();
     },
   },
 };

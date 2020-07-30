@@ -4,7 +4,11 @@
     <div class="info-price">
       <span class="n-price">{{goods.newprice}}</span>
       <span class="o-price">{{goods.oldprice}}</span>
-      <span class="goods-discount" v-if="goods.discount" :style="{background:goods.discountcolor}">{{goods.discount}}</span>
+      <span
+        class="goods-discount"
+        v-if="goods.discount"
+        :style="{background:goods.discountcolor}"
+      >{{goods.discount}}</span>
     </div>
     <div class="info-other">
       <span>{{goods.columns[0]}}</span>
@@ -16,7 +20,7 @@
       <!-- -- index 的取值是从 1.2... index，和数组下标差 1   -->
       <span class="info-service-item" v-for="n in goods.services.length-1" :key="n">
         <img :src="goods.services[n-1].icon" v-if="goods.services[n-1].icon" alt />
-        <span> {{goods.services[n-1].name}}</span>
+        <span>{{goods.services[n-1].name}}</span>
       </span>
     </div>
   </div>
@@ -37,7 +41,9 @@ export default {
 <style scoped>
 .base-infor {
   margin-top: 15px;
-  padding: 0 8px;
+  /* padding: 0 8px; */
+  padding-right: 8px;
+  padding-left: 8px;
   color: #999;
   border-bottom: 5px solid #f2f5f8;
 }
@@ -66,9 +72,9 @@ export default {
   border-radius: 100px;
   padding: 2px 6px;
   background: var(--color-high-text);
- /* vertical-align: top;  */
- position: relative;
- top: -6px;
+  /* vertical-align: top;  */
+  position: relative;
+  top: -6px;
 }
 .info-other {
   display: flex;
@@ -76,7 +82,7 @@ export default {
   color: #333;
   padding: 10px 4px;
   justify-content: space-between;
-  border-bottom: 1px solid #ededed
+  border-bottom: 1px solid #ededed;
 }
 .info-other span {
   /* flex: 1; */
@@ -89,8 +95,8 @@ export default {
   justify-content: space-between;
 }
 .info-service img {
-    width: 12px;
-    height: 12px;
-    vertical-align: middle;
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
 }
 </style>

@@ -29,8 +29,6 @@
 </template>
 
 <script>
-// import HomeSwipers from './childComponents/HomeSwipers'
-
 import HomeRecomandView from "./childComponents/HomeRecomandView";
 import HomeFeatureView from "./childComponents/HomeFeatureView";
 
@@ -43,7 +41,8 @@ import BackTop from "components/content/backTop/BackTop";
 import Swipers from "../../plugins/Swipers";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
-import { debounce } from "common/utils";
+// import { debounce } from "common/utils";
+import { itemListenerMixin } from "common/mixin";
 export default {
   name: "Home",
   components: {
@@ -70,9 +69,10 @@ export default {
       tabControlOffsetTop: 0,
       isTabFixed: false,
       saveY: 0,
-      itemImageListener: null,
+      // itemImageListener: null, mixin
     };
   },
+  mixins: [itemListenerMixin],
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
@@ -103,13 +103,14 @@ export default {
     this.getHomeGoods("sell");
   },
   mounted() {
+    // mixin
     // 监听商品 item 中图片加载完成
-    const newRefresh = debounce(this.$refs.scroll.refresh, 50);
+    // let newRefresh = debounce(this.$refs.scroll.refresh, 50);
     // 对监听事件进行保存
-    this.itemImageListener = () => {
-      newRefresh();
-    };
-    this.$bus.$on("itemImageLoad", this.itemImageListener);
+    // this.itemImageListener = () => {
+    //   newRefresh();
+    // };
+    // this.$bus.$on("itemImageLoad", this.itemImageListener);
   },
   methods: {
     /**

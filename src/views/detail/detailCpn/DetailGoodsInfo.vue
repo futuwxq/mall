@@ -27,28 +27,30 @@ export default {
   data() {
     return {
       count: 0,
-      imagesLength: 0,
+      // imagesLength: 0,
     };
   },
   methods: {
     imageLoad() {
-      // console.log(this.imagesLength);
-      // 判断所有的图片都加在完了，只进行一次回调
-      if (++this.count === this.imagesLength) {
-        this.$emit("imageLoad");
-        console.log("goodsInfor 加载完成");
-      }
+      // 方法一 判断所有的图片都加在完了，只进行一次回调
+      // if (++this.count === this.imagesLength) {
+      //   this.$emit("imageLoad");
+      //   console.log("goodsInfor 加载完成");
+      // }
+
+      // 方法二 利用 debounce
+      this.$emit("imageLoad");
     },
   },
-  watch: {
-    // 监听 获取图片个数
-    detailInfo() {
-      for (let i in this.detailInfo.detailImage) {
-        // console.log(this.detailInfo.detailImage[i]);
-        this.imagesLength += this.detailInfo.detailImage[i].list.length;
-      }
-    },
-  },
+  // watch: {
+  //   // 监听 获取图片个数
+  //   detailInfo() {
+  //     for (let i in this.detailInfo.detailImage) {
+  //       // console.log(this.detailInfo.detailImage[i]);
+  //       this.imagesLength += this.detailInfo.detailImage[i].list.length;
+  //     }
+  //   },
+  // },
 };
 </script>
 <style lang="less" scoped>

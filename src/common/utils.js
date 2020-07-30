@@ -4,6 +4,7 @@
  */
 export function debounce(func, delay) {
     let timer = null
+
     return function(...args) {
         // 在 delay 时间未带，就清除上一次的计时器
         if (timer) clearTimeout(timer)
@@ -11,7 +12,6 @@ export function debounce(func, delay) {
             func.apply(this, args)
         }, delay)
     }
-
 }
 
 /**

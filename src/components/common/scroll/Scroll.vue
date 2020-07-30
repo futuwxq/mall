@@ -70,15 +70,14 @@ export default {
 
     refresh() {
       this.scroll && this.scroll.refresh();
-      // console.log('---');
     },
 
     /**
      * 返回滚动的 y 轴距离
      */
-    getScrollY(){
-      return this.scroll ? this.scroll.y : 0
-    }
+    getScrollY() {
+      return this.scroll ? this.scroll.y : 0;
+    },
   },
 };
 </script>

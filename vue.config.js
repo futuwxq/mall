@@ -9,5 +9,5 @@ module.exports = {
                 'assets': '@/assets',
             }
         }
-    }
+    },
 }

@@ -28,12 +28,14 @@ export default {
   },
   methods: {
     imageLoad() {
-      // 根据路由判断是哪个路径 emit 哪个事件
+      // 方法一 根据路由判断是哪个路径 emit 哪个事件
       // if (this.$route.path.includes("/home")) {
       //   this.$bus.$emit("homeItemImageLoad");
       // } else if (this.$route.path.includes("/detail")) {
       //   this.$bus.$emit("detailItemImageLoad");
       // }
+
+      // 方法二 事件总线 + mixin
       this.$bus.$emit("ItemImageLoad");
     },
     itemClick() {
