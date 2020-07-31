@@ -18,3 +18,24 @@ export const itemListenerMixin = {
         this.$bus.$on("itemImageLoad", this.itemImageListener);
     }
 }
+import BackTop from "components/content/backTop/BackTop";
+import { BACK_POSITION } from "common/const";
+export const backTopMixin = {
+    components: {
+        BackTop
+    },
+    data() {
+        return {
+            isShowBackTop: false,
+        }
+    },
+    methods: {
+        btnClick() {
+            this.$refs.scroll.scrollTo(0, 0);
+        },
+        listenShowBackTop(position) {
+            //  判断BackTop是否显示
+            this.isShowBackTop = -position.y > BACK_POSITION;
+        }
+    }
+}

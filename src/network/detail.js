@@ -25,6 +25,7 @@ export class Goods {
         this.discountcolor = itemInfo.discountBgColor;
         this.columns = columns;
         this.services = services;
+        // 需要添加到购物车的价格
         this.realPrice = itemInfo.lowNowPrice;
     }
 }

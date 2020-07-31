@@ -36,13 +36,15 @@ import NavBar from "components/common/navbar/NavBar";
 import Scroll from "components/common/scroll/Scroll";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/good/GoodsList";
-import BackTop from "components/content/backTop/BackTop";
+// import BackTop from "components/content/backTop/BackTop";
 
 import Swipers from "../../plugins/Swipers";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 // import { debounce } from "common/utils";
-import { itemListenerMixin } from "common/mixin";
+import { itemListenerMixin, backTopMixin } from "common/mixin";
+// import { BACK_POSITION } from "common/const";
+
 export default {
   name: "Home",
   components: {
@@ -52,7 +54,6 @@ export default {
     Scroll,
     TabControl,
     GoodsList,
-    BackTop,
     Swipers,
   },
   data() {
@@ -72,7 +73,7 @@ export default {
       // itemImageListener: null, mixin
     };
   },
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin, backTopMixin],
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
@@ -135,7 +136,7 @@ export default {
     // scroll
     contentScroll(position) {
       // 1.判断BackTop是否显示
-      this.isShowBackTop = -position.y > 1000;
+      this.listenShowBackTop(position);
       // 2.决定tabControl是否吸顶(position: fixed)
       this.isTabFixed = -position.y > this.tabControlOffsetTop;
     },
@@ -144,11 +145,11 @@ export default {
       this.getHomeGoods(this.currentType);
     },
     //backtop
-    btnClick() {
-      // this.$refs.scroll 获取的是整个Scroll对象，可以调用 Scroll对象属性
-      // this.$refs.scroll.scroll.scrollTo(0,0,500)
-      this.$refs.scroll.scrollTo(0, 0);
-    },
+    // btnClick() {
+    //   // this.$refs.scroll 获取的是整个Scroll对象，可以调用 Scroll对象属性
+    //   // this.$refs.scroll.scroll.scrollTo(0,0,500)
+    //   this.$refs.scroll.scrollTo(0, 0);
+    // },
     // swiper 加载完成获取tabControl的offsetTop
     // $el 是获取组件的根元素
     swiperImageIoad() {
