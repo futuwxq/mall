@@ -12,6 +12,7 @@
     </scroll>
     <back-top @click.native="btnClick" v-show="isShowBackTop" />
     <detail-bottom-bar @addToCart="addToCart" />
+    <!-- <totast /> -->
   </div>
 </template>
 
@@ -28,6 +29,7 @@ import DetailBottomBar from "./detailCpn/DetailBottomBar";
 import GoodsList from "components/content/good/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
 // import BackTop from "components/content/backTop/BackTop";
+// import Totast from "components/common/totast/Totast";
 
 import { debounce } from "common/utils";
 import { itemListenerMixin, backTopMixin } from "common/mixin";
@@ -40,6 +42,7 @@ import {
   Shop,
   GoodsParam,
 } from "network/detail";
+import { mapActions } from "vuex";
 
 export default {
   name: "Detail",
@@ -54,6 +57,7 @@ export default {
     DetailBottomBar,
     GoodsList,
     Scroll,
+    // Totast,
   },
   data() {
     return {
@@ -165,7 +169,12 @@ export default {
     this.$bus.$off("itemImageLoad", this.itemImageListener);
   },
   methods: {
-    // 处理的是 detail info 的图片
+    ...mapActions(["addCart"]),
+
+    /**
+     * 处理的是 detail info 的图片
+     */
+
     imageLoad() {
       // 方法一 等所有图片加载完了 refresh
       // this.$refs.scroll.refresh();
@@ -232,12 +241,20 @@ export default {
       const product = {};
       product.image = this.swpiperImage[0];
       product.title = this.goods.title;
-      product.desc = this.goods.title;
+      product.desc = this.goods.desc;
       product.price = this.goods.realPrice;
       product.iid = this.iid;
 
       // 2.将商品添加到购物车中 vuex
-      this.$store.dispatch("addCart", product);
+      // this.$store.dispatch("addCart", product).then((res) => {
+      //   console.log(res);
+      // });
+
+      // promise + mapActions
+      this.addCart(product).then((res) => {
+        // console.log(this.$toast);
+        this.$toast.show(res, 2000);
+      });
     },
   },
 };
