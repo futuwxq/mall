@@ -50,14 +50,14 @@
 </template>
 
 <script>
-import TabBar from 'components/common/TabBar/TabBar'
-import TabBarItem from 'components/common/TabBar/TabBarItem'
+import TabBar from "components/common/TabBar/TabBar";
+import TabBarItem from "components/common/TabBar/TabBarItem";
 export default {
-  name: 'MainTabBar',
+  name: "MainTabBar",
   components: {
     // TabBar :TabBar
     TabBar,
     TabBarItem,
-  }
-}
+  },
+};
 </script>
