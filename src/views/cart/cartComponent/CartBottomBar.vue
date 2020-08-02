@@ -59,9 +59,9 @@ export default {
       // 不全选中状态
       else this.cartList.forEach((item) => (item.isChecked = true));
     },
-  },
-  calcClick() {
-    if (!isSelectAll) this.$toast.show("请选择购买的商品");
+    calcClick() {
+      if (!this.isSelectAll) this.$toast.show("请选择购买的商品");
+    },
   },
 };
 </script>
