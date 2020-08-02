@@ -13,7 +13,8 @@ obj.install = function(Vue) {
     // 3.将组件对象 手动挂载到某一个元素上
     toast.$mount(document.createElement('div'))
 
-    // 4.toast.$el 对应的就是 div
+    // 4.toast.$el 对应的就是 这个div
+    // 在整个body内追加这个 dom 
     document.body.appendChild(toast.$el)
 
     // 5 $toast 添加到 Vue 原型
