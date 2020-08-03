@@ -38,9 +38,13 @@ export default {
       );
     },
     checkLength() {
-      return this.cartList.filter((item) => {
-        return item.isChecked;
-      }).length;
+      return this.cartList
+        .filter((item) => {
+          return item.isChecked;
+        })
+        .reduce((preValue, item) => {
+          return preValue + item.count;
+        }, 0);
     },
     /**
      * 是否全选
@@ -61,6 +65,9 @@ export default {
     },
     calcClick() {
       if (!this.isSelectAll) this.$toast.show("请选择购买的商品");
+      else {
+        this.$toast.show("支付界面未完善");
+      }
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="cart-list-item">
+  <div class="cart-list-item" @click="productClick">
     <div class="item-selector">
       <check-button @click.native="checkClick" :isChecked="proudcts.isChecked" />
     </div>
@@ -11,7 +11,13 @@
       <div class="item-desc">{{proudcts.desc}}</div>
       <div class="info-bottom">
         <div class="item-price left">{{proudcts.price | showPrice}}</div>
-        <div class="item-count right">x{{proudcts.count}}</div>
+        <div class="item-count right">
+          x{{proudcts.count}}
+          <!-- <button @click="increase">+</button>
+          <input type="text" :value="proudcts.count" />
+          <button @click="decrease">-</button>-->
+        </div>
+        <!-- <div class="item-count right">x{{proudcts.count}}</div> -->
       </div>
     </div>
   </div>
@@ -41,6 +47,16 @@ export default {
     checkClick() {
       this.proudcts.isChecked = !this.proudcts.isChecked;
     },
+    // increase() {
+    //   // 假设没有库存限制
+    //   this.proudcts.count++;
+    // },
+    // decrease() {
+    //   return this.proudcts.count == 1 ? 1 : this.proudcts.count--;
+    // },
+    productClick() {
+      this.$router.push("/detail" + this.proudcts.iid);
+    },
   },
 };
 </script>
@@ -50,7 +66,7 @@ export default {
   width: 100%;
   display: flex;
   padding: 5px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 4px solid #eee;
 }
 
 .item-selector {
@@ -98,6 +114,15 @@ export default {
 
 .info-bottom .item-price {
   color: orangered;
+}
+
+.item-count {
+  text-align: center;
+  line-height: 26px;
+  width: 26px;
+  height: 26px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 </style>
 
