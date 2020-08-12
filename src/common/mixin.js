@@ -39,3 +39,37 @@ export const backTopMixin = {
         }
     }
 }
+
+import TabControl from "components/content/tabControl/TabControl";
+
+export const tabControlMixin = {
+    components: {
+        TabControl
+    },
+    data() {
+        return {
+            goodsCurrentType: "pop"
+        }
+    },
+    methods: {
+        titleClick(index) {
+            // console.log(index);
+            switch (index) {
+                case 0:
+                    this.goodsCurrentType = "pop";
+                    break;
+                case 1:
+                    this.goodsCurrentType = "new";
+                    break;
+                case 2:
+                    this.goodsCurrentType = "sell";
+                    break;
+            }
+
+            // 更新 index
+            this.$refs.tabControl.currentIndex = index;
+            // this.$refs.tabControlCopy.currentIndex = index;
+        },
+    }
+
+}
