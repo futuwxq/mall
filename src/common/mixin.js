@@ -68,7 +68,7 @@ export const tabControlMixin = {
 
             // 更新 index
             this.$refs.tabControl.currentIndex = index;
-            // this.$refs.tabControlCopy.currentIndex = index;
+            this.$refs.tabControlCopy.currentIndex = index;
         },
     }
 

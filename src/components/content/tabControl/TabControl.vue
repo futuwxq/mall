@@ -14,30 +14,29 @@
 
 <script>
 export default {
-  name: 'TabControl',
+  name: "TabControl",
   props: {
     tabControlTitles: {
       type: Array,
       default() {
-        return []
-      }
-    }
+        return [];
+      },
+    },
   },
   data() {
     return {
-      currentIndex: 0 //记录当前列表的index
-    }
+      currentIndex: 0, //记录当前列表的index
+    };
   },
-  mounted(){
-  },
+  mounted() {},
   methods: {
     itemClick(index) {
-      this.currentIndex = index
+      this.currentIndex = index;
       // 将当前点击的索引值传递给父级 传递的参数是index 和 this.currentIndex 都可以
-      this.$emit('tabClick', this.currentIndex)
-    }
-  }
-}
+      this.$emit("tabClick", this.currentIndex);
+    },
+  },
+};
 </script>
 
 <style scoped>

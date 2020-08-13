@@ -10,6 +10,7 @@
       v-show="isTabFixed"
       class="tabFixed"
     />
+    <!--data 只要 good-list 会发生变化  -->
     <scroll
       class="content"
       ref="scroll"
@@ -17,6 +18,7 @@
       @scroll="contentScroll"
       :pull-up-load="true"
       @pullingUp="loadMore"
+      :data="showGoods"
     >
       <swipers :banners="banners" @swiperImageIoad="swiperImageIoad" />
       <home-recomand-view :recommends="recommends" />
@@ -42,7 +44,7 @@ import Swipers from "../../plugins/Swipers";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 // import { debounce } from "common/utils";
-import { itemListenerMixin, backTopMixin } from "common/mixin";
+import { tabControlMixin, backTopMixin } from "common/mixin";
 // import { BACK_POSITION } from "common/const";
 
 export default {
@@ -73,15 +75,15 @@ export default {
       // itemImageListener: null, mixin
     };
   },
-  mixins: [itemListenerMixin, backTopMixin],
+  mixins: [backTopMixin, tabControlMixin],
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
     },
   },
-  destroyed() {
-    console.log("home destory");
-  },
+  // destroyed() {
+  //   console.log("home destory");
+  // },
   activated() {
     this.$refs.scroll.scrollTo(0, this.saveY, 0);
     this.$refs.scroll.refresh();
@@ -92,7 +94,7 @@ export default {
     // 2.取消全局事件监听
     // 如果参数只写一个事件名称，就会把所有地方相关事件的监听取消，因此需要传入一个函数
     // 也就是离开的时候只取消对该函数的监听
-    this.$bus.$off("itemImageLoad", this.itemImageListener);
+    // this.$bus.$off("itemImageLoad", this.itemImageListener);
   },
   created() {
     // 请求多个数据
@@ -117,22 +119,22 @@ export default {
     /**
      * 事件监听相关的方法
      */
-    tabClick(index) {
-      switch (index) {
-        case 0:
-          this.currentType = "pop";
-          break;
-        case 1:
-          this.currentType = "new";
-          break;
-        case 2:
-          this.currentType = "sell";
-          break;
-      }
-      // 同步 TabControl 和 TabControlCopy 的激活状态
-      this.$refs.tabControl.currentIndex = index;
-      this.$refs.tabControlCopy.currentIndex = index;
-    },
+    // tabClick(index) {
+    //   switch (index) {
+    //     case 0:
+    //       this.currentType = "pop";
+    //       break;
+    //     case 1:
+    //       this.currentType = "new";
+    //       break;
+    //     case 2:
+    //       this.currentType = "sell";
+    //       break;
+    //   }
+    //   // 同步 TabControl 和 TabControlCopy 的激活状态
+    //   this.$refs.tabControl.currentIndex = index;
+    //   this.$refs.tabControlCopy.currentIndex = index;
+    // },
     // scroll
     contentScroll(position) {
       // 1.判断BackTop是否显示

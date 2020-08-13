@@ -45,5 +45,6 @@ export default {
 .nav-bar {
   background: var(--color-tint);
   color: #fff;
+  /* position: fixed; */
 }
 </style>

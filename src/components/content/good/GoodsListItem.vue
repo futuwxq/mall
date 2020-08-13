@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img v-lazy="getGoodImage" @load="imageLoad" />
+    <img v-lazy="getGoodImage" />
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -22,22 +22,26 @@ export default {
   },
   computed: {
     getGoodImage() {
-      return this.goodsItem.image || this.goodsItem.show.img;
+      return (
+        this.goodsItem.image || this.goodsItem.img || this.goodsItem.show.img
+      );
       // return this.goodsItem.show.img || this.goodsItem.image;
     },
   },
   methods: {
-    imageLoad() {
-      // 方法一 根据路由判断是哪个路径 emit 哪个事件
-      // if (this.$route.path.includes("/home")) {
-      //   this.$bus.$emit("homeItemImageLoad");
-      // } else if (this.$route.path.includes("/detail")) {
-      //   this.$bus.$emit("detailItemImageLoad");
-      // }
-
-      // 方法二 事件总线 + mixin
-      this.$bus.$emit("ItemImageLoad");
-    },
+    // imageLoad() {
+    // 方法一 根据路由判断是哪个路径 emit 哪个事件
+    // if (this.$route.path.includes("/home")) {
+    //   this.$bus.$emit("homeItemImageLoad");
+    // } else if (this.$route.path.includes("/detail")) {
+    //   this.$bus.$emit("detailItemImageLoad");
+    // } else if (this.$route.path.includes("/category")){
+    //   this.$bus.$emit("categoryLoad");
+    // }
+    // this.$emit("ItemImageLoad")
+    // 方法二 事件总线 + mixin
+    // this.$bus.$emit("ItemImageLoad");
+    // },
     itemClick() {
       //  路由挑战
       this.$router.push("/detail" + this.goodsItem.iid);

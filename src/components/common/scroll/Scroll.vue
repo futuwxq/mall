@@ -34,17 +34,6 @@ export default {
   mounted() {
     // 1.创建 BScroll 对象
     setTimeout(this.__initScroll, 20);
-    // 2.监听滚动事件
-    // BetterScroll 实时派发 scroll 事件，是需要设置 probeType 为 3。
-    this.scroll.on("scroll", (position) => {
-      // console.log(position)
-      this.$emit("scroll", position);
-    });
-    //3. 监听上拉事件
-    this.scroll.on("pullingUp", () => {
-      // console.log('上拉加载更多');
-      this.$emit("pullingUp");
-    });
   },
   methods: {
     __initScroll() {
@@ -63,6 +52,17 @@ export default {
 
         // pullup 插件相关配置，true 监听上拉加载更多
         pullUpLoad: this.pullUpLoad,
+      });
+      // 2.监听滚动事件
+      // BetterScroll 实时派发 scroll 事件，是需要设置 probeType 为 3。
+      this.scroll.on("scroll", (position) => {
+        // console.log(position)
+        this.$emit("scroll", position);
+      });
+      //3. 监听上拉事件
+      this.scroll.on("pullingUp", () => {
+        // console.log('上拉加载更多');
+        this.$emit("pullingUp");
       });
     },
     // 封装 scrollTo 方法，让 Home 组件直接调用

@@ -1,7 +1,13 @@
 <template>
   <div id="detail">
     <detail-nav-bar class="nav-bar" @titleClick="titleClick" ref="navbar" />
-    <scroll class="content" ref="scroll" @scroll="contentScroll" :probe-type="3">
+    <scroll
+      class="content"
+      ref="scroll"
+      @scroll="contentScroll"
+      :probe-type="3"
+      :data="[swpiperImage, goods, shop,detailInfo,paramInfo,commentInfo,recommendInfo]"
+    >
       <detail-swiper :swpiperImage="swpiperImage" />
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
@@ -32,7 +38,7 @@ import Scroll from "components/common/scroll/Scroll";
 // import Totast from "components/common/totast/Totast";
 
 import { debounce } from "common/utils";
-import { itemListenerMixin, backTopMixin } from "common/mixin";
+import { backTopMixin } from "common/mixin";
 // import { BACK_POSITION } from "common/const";
 
 import {
@@ -77,7 +83,7 @@ export default {
       // itemImageListener: null, mixin
     };
   },
-  mixins: [itemListenerMixin, backTopMixin],
+  mixins: [backTopMixin],
   created() {
     this.iid = this.$route.params.iid;
 
@@ -130,6 +136,7 @@ export default {
 
     this.getThemeTopY = debounce(() => {
       const navbarTops = this.$refs.navbar.$el.offsetHeight;
+      // const navbarTops = 0;
       this.themeTopYs = [];
 
       this.themeTopYs.push(0);
@@ -160,14 +167,14 @@ export default {
     // };
     // this.$bus.$on("itemImageLoad", this.itemImageListener);
   },
-  deactivated() {
-    console.log("home destory");
-  },
-  destroyed() {
-    // 取消全局事件监听
-    // 因为 Detail 没有 keep-alive，所以无法触发deactivated 需要在 destory
-    this.$bus.$off("itemImageLoad", this.itemImageListener);
-  },
+  // deactivated() {
+  //   console.log("home destory");
+  // },
+  // destroyed() {
+  //   // 取消全局事件监听
+  //   // 因为 Detail 没有 keep-alive，所以无法触发deactivated 需要在 destory
+  //   this.$bus.$off("itemImageLoad", this.itemImageListener);
+  // },
   methods: {
     ...mapActions(["addCart"]),
 
@@ -180,7 +187,7 @@ export default {
       // this.$refs.scroll.refresh();
       // 方法二 debounce mixin
       // 等价于调用了 debounce(this.$refs.scroll.refresh, 100);
-      this.newRefresh();
+      // this.newRefresh();
 
       // 第三次获取 offsetTop 调用过于频繁
       // this.themeTopYs = [];
