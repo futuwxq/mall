@@ -1,19 +1,11 @@
-# mall
+### 仿蘑菇街H5 2020年07月 - 2020年08月
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+该项目采用 vue 全家桶开发，页面布局仿写蘑菇街：
+1. 页面布局采用视图划分，分为首页、分类、商品详情页、购物车和个人信息 5 个视图。每个视图是一个路
+由。设置路由懒加载，商品详情页使用动态路由传递参数。
+2. 项目使用 vue cli3 搭建，全局状态数据使用 vuex 集中管理，vue-rounter 按需加载路由，通过路由
+keepalive 和 activated 钩子函数手动缓存组件内容，实现组件状态的保持。
+3. 项目采用组件化开发，把功能独立的模块封装成自定义组件，增强代码的复用性。自定义事件和 props 实
+现组件间的通信，把组件中相同的方法和数据封装到 mixins 中。
+4. 页面主要使用 flex 布局，px2vw 插件实现移动端适配，better-scroll 插件实现页面滚动，fsakclick 解
+决移动端 300ms 延时， vue-lazyload 实现图片懒加载。
